@@ -8,7 +8,7 @@ import com.example.moviesapp.movieapp.data.model.MovieEntity
 
 @Dao
 interface MovieDao {
-    @Query("SELECT * FROM MovieEntity")
+    @Query("SELECT * FROM movieentity")
     suspend fun getAllMovies(): List<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

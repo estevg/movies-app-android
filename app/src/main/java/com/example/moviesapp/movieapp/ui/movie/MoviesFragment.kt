@@ -1,7 +1,6 @@
 package com.example.moviesapp.movieapp.ui.movie
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -12,7 +11,7 @@ import com.example.moviesapp.R
 import com.example.moviesapp.databinding.FragmentMoviesBinding
 import com.example.moviesapp.movieapp.core.Resource
 import com.example.moviesapp.movieapp.data.model.Movie
-import com.example.moviesapp.movieapp.data.remote.MovieDataSource
+import com.example.moviesapp.movieapp.data.remote.RemoteMovieDataSource
 import com.example.moviesapp.movieapp.presentation.MovieViewModalFactory
 import com.example.moviesapp.movieapp.presentation.MovieViewModel
 import com.example.moviesapp.movieapp.repository.MovieRepositoryImpl
@@ -29,7 +28,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), MovieAdapter.OnMovieC
     private val viewModel by viewModels<MovieViewModel> {
         MovieViewModalFactory(
             MovieRepositoryImpl(
-                MovieDataSource(RetroFitClient.webservice)
+                RemoteMovieDataSource(RetroFitClient.webservice)
             )
         )
     }

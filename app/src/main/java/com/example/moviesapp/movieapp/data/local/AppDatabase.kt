@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.moviesapp.movieapp.data.model.MovieEntity
 
 @Database(entities = [MovieEntity::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 
     companion object {
@@ -15,14 +15,12 @@ abstract class AppDatabase: RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             INSTANCE = INSTANCE ?: Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                "movie_table"
-            ).build()
+                context.applicationContext, AppDatabase::class.java, "movie_table"
+            ).fallbackToDestructiveMigration().build()
             return INSTANCE!!
         }
 
-        fun destroyDatabase(){
+        fun destroyDatabase() {
             INSTANCE = null
         }
     }

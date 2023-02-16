@@ -1,6 +1,7 @@
 package com.example.moviesapp.movieapp.ui.movie
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.example.moviesapp.R
 import com.example.moviesapp.databinding.FragmentMoviesBinding
 import com.example.moviesapp.movieapp.core.Resource
+import com.example.moviesapp.movieapp.data.local.AppDatabase
+import com.example.moviesapp.movieapp.data.local.LocalMovieDataSource
 import com.example.moviesapp.movieapp.data.model.Movie
 import com.example.moviesapp.movieapp.data.remote.RemoteMovieDataSource
 import com.example.moviesapp.movieapp.presentation.MovieViewModalFactory
@@ -28,7 +31,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), MovieAdapter.OnMovieC
     private val viewModel by viewModels<MovieViewModel> {
         MovieViewModalFactory(
             MovieRepositoryImpl(
-                RemoteMovieDataSource(RetroFitClient.webservice)
+                RemoteMovieDataSource(RetroFitClient.webservice),
+                LocalMovieDataSource(AppDatabase.getDatabase(requireContext()).movieDao())
             )
         )
     }
@@ -44,6 +48,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), MovieAdapter.OnMovieC
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
+                    Log.d("Respuesta", "Respuesta ${result.data}")
+
                     binding.progressBar.visibility = View.GONE
                     concatAdapter.apply {
                         addAdapter(
@@ -77,6 +83,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), MovieAdapter.OnMovieC
                     binding.rvMovies.adapter = concatAdapter
                 }
                 is Resource.Failure -> {
+                    Log.d("Error", "Hubo un error ${result.exception}")
+
                     binding.progressBar.visibility = View.GONE
                 }
             }

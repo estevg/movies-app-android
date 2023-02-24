@@ -11,31 +11,30 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.example.moviesapp.R
 import com.example.moviesapp.databinding.FragmentMoviesBinding
 import com.example.moviesapp.movieapp.core.Resource
-import com.example.moviesapp.movieapp.data.local.AppDatabase
-import com.example.moviesapp.movieapp.data.local.LocalMovieDataSource
 import com.example.moviesapp.movieapp.data.model.Movie
-import com.example.moviesapp.movieapp.data.remote.RemoteMovieDataSource
-import com.example.moviesapp.movieapp.presentation.MovieViewModalFactory
 import com.example.moviesapp.movieapp.presentation.MovieViewModel
-import com.example.moviesapp.movieapp.repository.MovieRepositoryImpl
-import com.example.moviesapp.movieapp.repository.RetroFitClient
 import com.example.moviesapp.movieapp.ui.movie.adapters.MovieAdapter
 import com.example.moviesapp.movieapp.ui.movie.adapters.concat.UpComingConcatAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MoviesFragment : Fragment(R.layout.fragment_movies), MovieAdapter.OnMovieClickListener {
 
     private lateinit var binding: FragmentMoviesBinding
     private lateinit var concatAdapter: ConcatAdapter
 
-    private val viewModel by viewModels<MovieViewModel> {
+
+    private val viewModel by viewModels<MovieViewModel>()
+
+   /* private val viewModel by viewModels<MovieViewModel> {
         MovieViewModalFactory(
             MovieRepositoryImpl(
                 RemoteMovieDataSource(RetroFitClient.webservice),
                 LocalMovieDataSource(AppDatabase.getDatabase(requireContext()).movieDao())
             )
         )
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

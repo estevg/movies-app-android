@@ -1,18 +1,21 @@
 package com.example.moviesapp.movieapp.repository
 
-import android.util.Log
+
 import com.example.moviesapp.movieapp.core.InternetCheck
 import com.example.moviesapp.movieapp.data.local.LocalMovieDataSource
 import com.example.moviesapp.movieapp.data.model.MovieList
 import com.example.moviesapp.movieapp.data.model.toMovieEntity
 import com.example.moviesapp.movieapp.data.remote.RemoteMovieDataSource
+import javax.inject.Inject
 
-class MovieRepositoryImpl(
+
+class MovieRepositoryImpl @Inject constructor(
     private val dataSource: RemoteMovieDataSource,
-    private val dataSourceLocal: LocalMovieDataSource
+    private val dataSourceLocal: LocalMovieDataSource,
 ) : MovieRepository {
 
     override suspend fun getUpcomingMovies(): MovieList {
+
         return if (InternetCheck.isNetworkAvailable()) {
             dataSource.getUpcomingMovies().results.forEach { movie ->
                 dataSourceLocal.saveMovie(movie.toMovieEntity("upcoming"))
